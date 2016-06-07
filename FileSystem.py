@@ -9,7 +9,8 @@ class FileSystem():
         return os.path.expanduser("~")
         
     def list_directory_contents(self, directory):
-        return os.listdir(directory)
+        dir_contents = [os.path.join(self.get_default_directory(), i) for i in os.listdir(self.get_default_directory())]
+        return dir_contents
         
     def move_directory(self, source, destination):
         pass

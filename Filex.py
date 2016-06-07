@@ -40,7 +40,7 @@ class Filex(QtWidgets.QWidget):
         self.scroll_area_widget = QtWidgets.QWidget()
         self.layout = QtWidgets.QVBoxLayout()
         default_dir = self.file_system.get_default_directory()
-        dir_contents = [os.path.join(default_dir, i) for i in self.file_system.list_directory_contents(default_dir)]
+        dir_contents = self.file_system.list_directory_contents(default_dir)
         for i in range(len(dir_contents)):
             if os.path.isdir(dir_contents[i]):
                 directory = Directory()

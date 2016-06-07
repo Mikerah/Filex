@@ -5,6 +5,12 @@ class FileSystem():
     def __init__(self):
         pass
         
+    def get_default_directory(self):
+        pass
+        
+    def list_directory_contents(self):
+        pass
+        
     def move_directory(self, source, destination):
         pass
         

@@ -1,13 +1,15 @@
 from PyQt5 import QtGui, QtCore, QtWidgets
 import sys
-import FileSystem
-import Directory
-import File
+import os
+from FileSystem import FileSystem
+from Directory import Directory
+from File import File
 
 class Filex(QtWidgets.QWidget):
 
     def __init__(self):
         super(Filex, self).__init__()
+        self.file_system = FileSystem()
         
         self.init_ui()
         
@@ -23,6 +25,7 @@ class Filex(QtWidgets.QWidget):
         
         # Search Path Line Edit
         self.display_path = QtWidgets.QLineEdit()
+        self.display_path.setText(self.file_system.get_default_directory())
         
         # Adding back button, next button and line edit to inner container layout
         self.inner_horizontal_layout = QtWidgets.QHBoxLayout()
@@ -36,12 +39,18 @@ class Filex(QtWidgets.QWidget):
         
         self.scroll_area_widget = QtWidgets.QWidget()
         self.layout = QtWidgets.QVBoxLayout()
-        for i in range(5):
-            dir = Directory.Directory()
-            self.layout.addWidget(dir)
+        default_dir = self.file_system.get_default_directory()
+        dir_contents = [os.path.join(default_dir, i) for i in self.file_system.list_directory_contents(default_dir)]
+        for i in range(len(dir_contents)):
+            if os.path.isdir(dir_contents[i]):
+                directory = Directory()
+                directory.set_directory_name(dir_contents[i])
+                self.layout.addWidget(directory)
+            else:
+                file = File()
+                file.set_file_name(dir_contents[i])
+                self.layout.addWidget(file)
             
-            file = File.File()
-            self.layout.addWidget(file)
         self.scroll_area_widget.setLayout(self.layout)
         
         self.scroll_area = QtWidgets.QScrollArea()

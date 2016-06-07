@@ -1,8 +1,7 @@
 from PyQt5 import QtGui, QtCore, QtWidgets
 import sys
-from InformationContainer import InformationContainer
 
-class File(InformationContainer):
+class File(QtWidgets.QWidget):
 
     def __init__(self):
         super(File,self).__init__()
@@ -12,7 +11,7 @@ class File(InformationContainer):
     def init_ui(self):
         self.file_icon = QtWidgets.QLabel()
         self.file_icon.setPixmap(QtGui.QPixmap('file_icon.png'))
-        self.file_label = QtWidgets.QLabel('Hello File')
+        self.file_label = QtWidgets.QLabel()
         
         self.horizontal_layout = QtWidgets.QHBoxLayout()
         self.horizontal_layout.addWidget(self.file_icon)
@@ -20,8 +19,8 @@ class File(InformationContainer):
         
         self.setLayout(self.horizontal_layout)
         
-    def set_directory_name(self, file_name):
-        self.directory_label.setText(file_name)
+    def set_file_name(self, file_name):
+        self.file_label.setText(file_name)
         
 if __name__ == "__main__":
     

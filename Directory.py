@@ -1,8 +1,7 @@
 from PyQt5 import QtGui, QtCore, QtWidgets
 import sys
-from InformationContainer import InformationContainer
 
-class Directory(InformationContainer):
+class Directory(QtWidgets.QWidget):
     
     def __init__(self):
         super(Directory, self).__init__()
@@ -12,7 +11,7 @@ class Directory(InformationContainer):
     def init_ui(self):
         self.directory_icon = QtWidgets.QLabel()
         self.directory_icon.setPixmap(QtGui.QPixmap('folder_icon.png'))
-        self.directory_label = QtWidgets.QLabel('Hello Dir')
+        self.directory_label = QtWidgets.QLabel()
         
         self.horizontal_layout = QtWidgets.QHBoxLayout()
         self.horizontal_layout.addWidget(self.directory_icon)

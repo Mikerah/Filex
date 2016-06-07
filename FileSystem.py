@@ -6,10 +6,10 @@ class FileSystem():
         pass
         
     def get_default_directory(self):
-        pass
+        return os.path.expanduser("~")
         
-    def list_directory_contents(self):
-        pass
+    def list_directory_contents(self, directory):
+        return os.listdir(directory)
         
     def move_directory(self, source, destination):
         pass

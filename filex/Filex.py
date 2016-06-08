@@ -68,6 +68,8 @@ class Filex(QtWidgets.QWidget):
         
         self.setLayout(self.vertical_box_layout)
         
+        self.setWindowTitle(self.file_system.get_current_working_directory())
+        
         
         
         

@@ -18,10 +18,20 @@ class File(QtWidgets.QWidget):
         self.horizontal_layout.addWidget(self.file_icon)
         self.horizontal_layout.addWidget(self.file_label)
         
+        self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.customContextMenuRequested.connect(self.openMenu)
+        
         self.setLayout(self.horizontal_layout)
         
     def set_file_name(self, file_name):
         self.file_label.setText(file_name)
+        
+    def openMenu(self,position):
+        
+        menu = QtWidgets.QMenu()
+        rename_file_action = menu.addAction("Rename File")
+        delete_file_action = menu.addAction("Delete File")
+        action = menu.exec_(self.mapToGlobal(position))
         
 if __name__ == "__main__":
     

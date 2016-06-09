@@ -21,10 +21,20 @@ class Directory(QtWidgets.QWidget):
         
         self.setLayout(self.horizontal_layout)
         
+        self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.customContextMenuRequested.connect(self.openMenu)
+        
     
     def set_directory_name(self, dir_name):
         self.directory_label.setText(dir_name)
         self.directory_label.setAlignment(QtCore.Qt.AlignLeft)
+        
+    def openMenu(self,position):
+        
+        menu = QtWidgets.QMenu()
+        rename_directory_action = menu.addAction("Rename Directory")
+        delete_directory_action = menu.addAction("Delete Directory")
+        action = menu.exec_(self.mapToGlobal(position))
     
         
 if __name__ == "__main__":

@@ -9,13 +9,12 @@ class Filex(QtWidgets.QWidget):
 
     def __init__(self):
         super(Filex, self).__init__()
-        self.file_system = FileSystem()
         
         self.init_ui()
         
     def init_ui(self):
         
-        default_dir = self.file_system.get_default_directory()
+        default_dir = FileSystem.get_default_directory(self)
     
         # Next Button
         self.next_button = QtWidgets.QPushButton('', self)
@@ -27,8 +26,8 @@ class Filex(QtWidgets.QWidget):
         
         # Search Path Line Edit
         self.display_path = QtWidgets.QLineEdit()
-        self.file_system.change_current_working_directory(default_dir)
-        self.display_path.setText(self.file_system.get_current_working_directory())
+        FileSystem.change_current_working_directory(self,default_dir)
+        self.display_path.setText(FileSystem.get_current_working_directory(self))
         
         # Adding back button, next button and line edit to inner container layout
         self.inner_horizontal_layout = QtWidgets.QHBoxLayout()
@@ -44,7 +43,7 @@ class Filex(QtWidgets.QWidget):
         self.layout = QtWidgets.QVBoxLayout()
         
         # Retrieve directory content and dynamically create Directory and File Widgets
-        dir_contents = self.file_system.list_directory_contents(default_dir)
+        dir_contents = FileSystem.list_directory_contents(self,default_dir)
         for i in range(len(dir_contents)):
             if os.path.isdir(dir_contents[i]):
                 directory = Directory()
@@ -70,7 +69,7 @@ class Filex(QtWidgets.QWidget):
         
         self.setLayout(self.vertical_box_layout)
         
-        self.setWindowTitle(self.file_system.get_current_working_directory())
+        self.setWindowTitle(FileSystem.get_current_working_directory(self))
         
     def openMenu(self, position):
     
@@ -79,10 +78,10 @@ class Filex(QtWidgets.QWidget):
         create_new_file_action = menu.addAction("Create New File")
         action = menu.exec_(self.scroll_area.mapToGlobal(position))
         if action == create_directory_action:
-            new_directory = self.file_system.add_directory()
+            new_directory = FileSystem.add_directory(self)
             self.layout.addWidget(new_directory)
         if action == create_new_file_action:
-            new_file = self.file_system.add_file()
+            new_file = FileSystem.add_file(self)
             self.layout.addWidget(new_file)
         
         

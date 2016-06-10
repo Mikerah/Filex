@@ -1,5 +1,6 @@
 from PyQt5 import QtGui, QtCore, QtWidgets
 import sys,os
+from FileSystem import FileSystem
 
 class Directory(QtWidgets.QWidget):
     
@@ -15,9 +16,14 @@ class Directory(QtWidgets.QWidget):
         
         self.directory_label = QtWidgets.QLabel()
         
+        self.directory_line_edit = QtWidgets.QLineEdit()
+        
         self.horizontal_layout = QtWidgets.QHBoxLayout()
         self.horizontal_layout.addWidget(self.directory_icon)
         self.horizontal_layout.addWidget(self.directory_label)
+        self.horizontal_layout.addWidget(self.directory_line_edit)
+        
+        self.directory_line_edit.hide()
         
         self.setLayout(self.horizontal_layout)
         
@@ -35,6 +41,24 @@ class Directory(QtWidgets.QWidget):
         rename_directory_action = menu.addAction("Rename Directory")
         delete_directory_action = menu.addAction("Delete Directory")
         action = menu.exec_(self.mapToGlobal(position))
+        
+        if action == rename_directory_action:
+            self.directory_label.hide()
+            self.directory_line_edit.show()
+            self.directory_line_edit.returnPressed.connect(self.rename_dir)
+            
+            
+            
+            #self.directory_label = QtWidgets.QLineEdit()
+            
+    def rename_dir(self):
+        i = self.directory_label.text().rfind("\\")
+        new_name = os.path.join(self.directory_label.text()[0:i],self.directory_line_edit.text())
+        FileSystem.rename_directory(self,self.directory_label.text(), new_name)
+        self.set_directory_name(new_name)
+        self.directory_line_edit.hide()
+        self.directory_label.show()
+            
     
         
 if __name__ == "__main__":

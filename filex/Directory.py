@@ -46,6 +46,10 @@ class Directory(QtWidgets.QWidget):
             self.directory_label.hide()
             self.directory_line_edit.show()
             self.directory_line_edit.returnPressed.connect(self.rename_dir)
+            
+        if action == delete_directory_action:
+            self.hide()
+            FileSystem.delete_directory(self,self.directory_label.text())
 
             
     def rename_dir(self):

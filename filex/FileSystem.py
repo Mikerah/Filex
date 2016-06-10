@@ -1,4 +1,4 @@
-import os, shutil
+import os, shutil, send2trash
 
 class FileSystem():
         
@@ -39,17 +39,17 @@ class FileSystem():
     def rename_file(self,old_name,new_name):
         os.rename(old_name,new_name)
         
-        
+    @staticmethod
     def delete_directory(self,directory_to_delete):
-        pass
+        send2trash.send2trash(directory_to_delete)
         
     def delete_file(self,file_to_delete):
-        pass
+        send2trash.send2trash(file_to_delete)
     
     @staticmethod
     def add_directory(self, new_directory="New Directory"):
         from Directory import Directory
-        os.mkdir(os.path.join(self.get_current_working_directory(), new_directory))
+        os.mkdir(os.path.join(FileSystem.get_current_working_directory(self), new_directory))
         directory = Directory()
         directory.set_directory_name(new_directory)
         return directory
@@ -57,7 +57,7 @@ class FileSystem():
     @staticmethod
     def add_file(self, new_file="New File"):
         from File import File
-        f = open(os.path.join(self.get_current_working_directory(), new_file), "w")
+        f = open(os.path.join(FileSystem.get_current_working_directory(self), new_file), "w")
         file = File()
         file.set_file_name(new_file)
         return file

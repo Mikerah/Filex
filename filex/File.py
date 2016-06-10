@@ -44,6 +44,9 @@ class File(QtWidgets.QWidget):
             self.file_label.hide()
             self.file_line_edit.show()
             self.file_line_edit.returnPressed.connect(self.rename_file)
+        if action == delete_file_action:
+            self.hide()
+            FileSystem.delete_file(self,self.file_label.text())
             
     def rename_file(self):
         i = self.file_label.text().rfind("\\")

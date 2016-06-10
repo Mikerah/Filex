@@ -48,6 +48,9 @@ class File(QtWidgets.QWidget):
             self.hide()
             FileSystem.delete_file(self,self.file_label.text())
             
+    def mouseDoubleClickEvent(self,event):
+        FileSystem.open_file(self,self.file_label.text())
+        
     def rename_file(self):
         i = self.file_label.text().rfind("\\")
         new_name = os.path.join(self.file_label.text()[0:i], self.file_line_edit.text())

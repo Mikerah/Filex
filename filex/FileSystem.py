@@ -1,4 +1,4 @@
-import os, shutil, send2trash
+import os, shutil, send2trash, subprocess,sys
 
 class FileSystem():
         
@@ -61,3 +61,13 @@ class FileSystem():
         file = File()
         file.set_file_name(new_file)
         return file
+        
+    @staticmethod
+    def open_file(self, file_to_open):
+        if sys.platform.startswith("win32"):
+            os.startfile(file_to_open, "open")
+        elif sys.platform.startswith("darwin"):
+            os.startfile(file_to_open,"open")
+        elif sys.platform.startswith("linux"):
+            os.startfile(file_to_open,"xdg-open ")
+        

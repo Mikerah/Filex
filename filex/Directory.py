@@ -46,10 +46,7 @@ class Directory(QtWidgets.QWidget):
             self.directory_label.hide()
             self.directory_line_edit.show()
             self.directory_line_edit.returnPressed.connect(self.rename_dir)
-            
-            
-            
-            #self.directory_label = QtWidgets.QLineEdit()
+
             
     def rename_dir(self):
         i = self.directory_label.text().rfind("\\")

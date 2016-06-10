@@ -36,7 +36,7 @@ class FileSystem():
         os.rename(old_name, new_name)
         
     def rename_file(self,old_name,new_name):
-        pass
+        os.rename(old_name,new_name)
         
         
     def delete_directory(self,directory_to_delete):

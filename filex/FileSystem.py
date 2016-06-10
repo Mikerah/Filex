@@ -35,6 +35,7 @@ class FileSystem():
     def rename_directory(self,old_name, new_name):
         os.rename(old_name, new_name)
         
+    @staticmethod
     def rename_file(self,old_name,new_name):
         os.rename(old_name,new_name)
         

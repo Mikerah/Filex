@@ -3,6 +3,7 @@ import sys,os
 from FileSystem import FileSystem
 
 class Directory(QtWidgets.QWidget):
+    copy_dir_event = QtCore.pyqtSignal(str)
     
     def __init__(self):
         super(Directory, self).__init__()
@@ -37,6 +38,7 @@ class Directory(QtWidgets.QWidget):
         self.directory_label.setText(dir_name)
         self.directory_label.setAlignment(QtCore.Qt.AlignLeft)
         
+
     def openMenu(self,position):
         
         menu = QtWidgets.QMenu()
@@ -56,6 +58,8 @@ class Directory(QtWidgets.QWidget):
             
         if action == copy_directory_action:
             FileSystem.copy_directory(self,self.directory_label.text())
+            self.copy_dir_event.emit(self.directory_label.text()+ " - Copy")
+            self.raise_()
 
             
     def rename_dir(self):

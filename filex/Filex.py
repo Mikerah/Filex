@@ -72,26 +72,42 @@ class Filex(QtWidgets.QWidget):
             else:
                 file = File()
                 file.set_file_name(dir_contents[i])
+                file.installEventFilter(self)
                 self.layout.addWidget(file)
                 
     def set_search_path(self,directory):
         FileSystem.change_current_working_directory(self,directory)
         self.display_path.setText(FileSystem.get_current_working_directory(self))
-                
-    def mouseDoubleClickEvent(self, event):
-        super(Filex, self).mouseDoubleClickEvent(event)
+              
         
     def eventFilter(self, obj, event):
         if isinstance(obj, Directory):
+            directory_to_retrieve = self.layout.itemAt(self.layout.indexOf(obj)).widget()
             if event.type() == event.MouseButtonDblClick:
-                directory_to_retrieve = self.layout.itemAt(self.layout.indexOf(obj)).widget()
                 self.set_search_path(directory_to_retrieve.get_directory_name())
                 self.clear_layout()
                 self.open_directory(directory_to_retrieve.get_directory_name())
-                print(directory_to_retrieve)
+            elif event.type() == event.ContextMenu:
+                directory_to_retrieve.copy_dir_event.connect(self.copy_dir)
+                
+        if isinstance(obj, File):
+            file_to_retrieve = self.layout.itemAt(self.layout.indexOf(obj)).widget()
+            if event.type() == event.ContextMenu:
+                file_to_retrieve.copy_file_event.connect(self.copy_file)
+            
                 
         return super(Filex, self).eventFilter(obj,event)
         
+    def copy_file(self, name):
+        file = File()
+        file.set_file_name(name)
+        self.layout.addWidget(file)
+        
+    def copy_dir(self, name):
+        directory = Directory()
+        directory.set_directory_name(name)
+        self.layout.addWidget(directory)
+           
     def clear_layout(self):
         while self.layout.count():
             child = self.layout.takeAt(0)

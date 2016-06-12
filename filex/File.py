@@ -3,6 +3,7 @@ import sys,os
 from FileSystem import FileSystem
 
 class File(QtWidgets.QWidget):
+    copy_file_event = QtCore.pyqtSignal(str)
 
     def __init__(self):
         super(File,self).__init__()
@@ -50,6 +51,8 @@ class File(QtWidgets.QWidget):
             FileSystem.delete_file(self,self.file_label.text())
         if action == copy_file_action:
             FileSystem.copy_file(self,self.file_label.text())
+            self.copy_file_event.emit(self.file_label.text()+ " - Copy" + os.path.splitext(self.file_label.text())[1])
+            self.raise_()
             
     def mouseDoubleClickEvent(self,event):
         FileSystem.open_file(self,self.file_label.text())

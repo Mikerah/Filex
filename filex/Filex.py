@@ -26,8 +26,7 @@ class Filex(QtWidgets.QWidget):
         
         # Search Path Line Edit
         self.display_path = QtWidgets.QLineEdit()
-        FileSystem.change_current_working_directory(self,default_dir)
-        self.display_path.setText(FileSystem.get_current_working_directory(self))
+        self.set_search_path(default_dir)
         
         # Adding back button, next button and line edit to inner container layout
         self.inner_horizontal_layout = QtWidgets.QHBoxLayout()
@@ -43,16 +42,7 @@ class Filex(QtWidgets.QWidget):
         self.layout = QtWidgets.QVBoxLayout()
         
         # Retrieve directory content and dynamically create Directory and File Widgets
-        dir_contents = FileSystem.list_directory_contents(self,default_dir)
-        for i in range(len(dir_contents)):
-            if os.path.isdir(dir_contents[i]):
-                directory = Directory()
-                directory.set_directory_name(dir_contents[i])
-                self.layout.addWidget(directory)
-            else:
-                file = File()
-                file.set_file_name(dir_contents[i])
-                self.layout.addWidget(file)
+        self.open_directory(default_dir)
             
         self.scroll_area_widget.setLayout(self.layout)
         
@@ -71,11 +61,43 @@ class Filex(QtWidgets.QWidget):
         
         self.setWindowTitle(FileSystem.get_current_working_directory(self))
         
-    def open_directory(self):
-        pass
+    def open_directory(self, directory):
+        dir_contents = FileSystem.list_directory_contents(self,directory)
+        for i in range(len(dir_contents)):
+            if os.path.isdir(dir_contents[i]):
+                directory = Directory()
+                directory.set_directory_name(dir_contents[i])
+                directory.installEventFilter(self)
+                self.layout.addWidget(directory)
+            else:
+                file = File()
+                file.set_file_name(dir_contents[i])
+                self.layout.addWidget(file)
+                
+    def set_search_path(self,directory):
+        FileSystem.change_current_working_directory(self,directory)
+        self.display_path.setText(FileSystem.get_current_working_directory(self))
+                
+    def mouseDoubleClickEvent(self, event):
+        super(Filex, self).mouseDoubleClickEvent(event)
+        
+    def eventFilter(self, obj, event):
+        if isinstance(obj, Directory):
+            if event.type() == event.MouseButtonDblClick:
+                directory_to_retrieve = self.layout.itemAt(self.layout.indexOf(obj)).widget()
+                self.set_search_path(directory_to_retrieve.get_directory_name())
+                self.clear_layout()
+                self.open_directory(directory_to_retrieve.get_directory_name())
+                print(directory_to_retrieve)
+                
+        return super(Filex, self).eventFilter(obj,event)
+        
+    def clear_layout(self):
+        while self.layout.count():
+            child = self.layout.takeAt(0)
+            child.widget().deleteLater()
         
     def open_menu(self, position):
-    
         menu = QtWidgets.QMenu()
         create_directory_action = menu.addAction("Create New Directory")
         create_new_file_action = menu.addAction("Create New File")

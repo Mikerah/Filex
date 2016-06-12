@@ -30,6 +30,8 @@ class Directory(QtWidgets.QWidget):
         self.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self.openMenu)
         
+    def get_directory_name(self):
+        return self.directory_label.text()
     
     def set_directory_name(self, dir_name):
         self.directory_label.setText(dir_name)

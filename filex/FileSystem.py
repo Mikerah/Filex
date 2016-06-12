@@ -19,13 +19,6 @@ class FileSystem():
     def change_current_working_directory(self, directory):
         os.chdir(directory)
         
-    @staticmethod
-    def move_directory(self, source, destination):
-        pass
-        
-    @staticmethod
-    def move_file(self, source, destination):
-        pass
         
     @staticmethod
     def copy_directory(self, source):

@@ -83,16 +83,16 @@ class Filex(QtWidgets.QWidget):
     def eventFilter(self, obj, event):
         if isinstance(obj, Directory):
             directory_to_retrieve = self.layout.itemAt(self.layout.indexOf(obj)).widget()
-            if event.type() == event.MouseButtonDblClick:
+            if event.type() == QtCore.QEvent.MouseButtonDblClick:
                 self.set_search_path(directory_to_retrieve.get_directory_name())
                 self.clear_layout()
                 self.open_directory(directory_to_retrieve.get_directory_name())
-            elif event.type() == event.ContextMenu:
+            elif event.type() == QtCore.QEvent.ContextMenu:
                 directory_to_retrieve.copy_dir_event.connect(self.copy_dir)
                 
-        if isinstance(obj, File):
+        elif isinstance(obj, File):
             file_to_retrieve = self.layout.itemAt(self.layout.indexOf(obj)).widget()
-            if event.type() == event.ContextMenu:
+            if event.type() == QtCore.QEvent.ContextMenu:
                 file_to_retrieve.copy_file_event.connect(self.copy_file)
             
                 

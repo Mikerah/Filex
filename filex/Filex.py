@@ -15,14 +15,18 @@ class Filex(QtWidgets.QWidget):
     def init_ui(self):
         
         default_dir = FileSystem.get_default_directory(self)
+        self.directory_stack = _DirectoryStack()
+        self.directory_stack.push_directory(default_dir)
     
         # Next Button
         self.next_button = QtWidgets.QPushButton('', self)
         self.next_button.setIcon(QtGui.QIcon('next_button_icon.png'))
+        self.next_button.clicked.connect(self.next_directory)
         
         # Back Button
         self.back_button = QtWidgets.QPushButton('', self)
         self.back_button.setIcon(QtGui.QIcon('back_button_icon.png'))
+        self.back_button.clicked.connect(self.back_directory)
         
         # Search Path Line Edit
         self.display_path = QtWidgets.QLineEdit()
@@ -83,9 +87,12 @@ class Filex(QtWidgets.QWidget):
     def eventFilter(self, obj, event):
         if isinstance(obj, Directory) and (event.type() == QtCore.QEvent.MouseButtonDblClick):
             directory_to_retrieve = self.layout.itemAt(self.layout.indexOf(obj)).widget()
-            self.set_search_path(directory_to_retrieve.get_directory_name())
+            directory_to_retrieve_name = directory_to_retrieve.get_directory_name()
+            self.set_search_path(directory_to_retrieve_name)
             self.clear_layout()
-            self.open_directory(directory_to_retrieve.get_directory_name())
+            self.open_directory(directory_to_retrieve_name)
+            self.directory_stack.push_directory(directory_to_retrieve_name)
+            
         elif isinstance(obj, Directory) and (event.type() == QtCore.QEvent.ContextMenu):
             directory_to_retrieve.copy_dir_event.connect(self.copy_dir)
                 
@@ -123,7 +130,39 @@ class Filex(QtWidgets.QWidget):
         if action == create_new_file_action:
             new_file = FileSystem.add_file(self)
             self.layout.addWidget(new_file)
+            
+    def next_directory(self):
+        directory = self.directory_stack.next_directory()
+        self.clear_layout()
+        self.open_directory(directory)
+        self.set_search_path(directory)
         
+    def back_directory(self):
+        directory = self.directory_stack.back_directory()
+        self.clear_layout()
+        self.open_directory(directory)
+        self.set_search_path(directory)
+        
+class _DirectoryStack():
+    
+    def __init__(self):
+        self.directory_stack = []
+        self.index = -1
+        
+        
+    def push_directory(self, directory):
+        self.directory_stack.append(directory)
+        self.index += 1
+        
+    def next_directory(self):
+        self.index += 1
+        return self.directory_stack[self.index]
+        
+    def back_directory(self):
+        if self.index == 0:
+            return
+        self.index -= 1
+        return self.directory_stack[self.index]
         
         
         

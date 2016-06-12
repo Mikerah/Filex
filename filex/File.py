@@ -38,6 +38,7 @@ class File(QtWidgets.QWidget):
         menu = QtWidgets.QMenu()
         rename_file_action = menu.addAction("Rename File")
         delete_file_action = menu.addAction("Delete File")
+        copy_file_action = menu.addAction("Copy File")
         action = menu.exec_(self.mapToGlobal(position))
         
         if action == rename_file_action:
@@ -47,6 +48,8 @@ class File(QtWidgets.QWidget):
         if action == delete_file_action:
             self.hide()
             FileSystem.delete_file(self,self.file_label.text())
+        if action == copy_file_action:
+            FileSystem.copy_file(self,self.file_label.text())
             
     def mouseDoubleClickEvent(self,event):
         FileSystem.open_file(self,self.file_label.text())

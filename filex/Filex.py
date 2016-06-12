@@ -60,7 +60,7 @@ class Filex(QtWidgets.QWidget):
         self.scroll_area.setWidgetResizable(True)
         self.scroll_area.setWidget(self.scroll_area_widget)
         self.scroll_area.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
-        self.scroll_area.customContextMenuRequested.connect(self.openMenu)
+        self.scroll_area.customContextMenuRequested.connect(self.open_menu)
         
         
         self.vertical_box_layout = QtWidgets.QVBoxLayout()
@@ -71,7 +71,10 @@ class Filex(QtWidgets.QWidget):
         
         self.setWindowTitle(FileSystem.get_current_working_directory(self))
         
-    def openMenu(self, position):
+    def open_directory(self):
+        pass
+        
+    def open_menu(self, position):
     
         menu = QtWidgets.QMenu()
         create_directory_action = menu.addAction("Create New Directory")

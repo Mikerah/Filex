@@ -1,4 +1,4 @@
-import os, shutil, send2trash, subprocess,sys
+import os, shutil, send2trash,sys
 
 class FileSystem():
         
@@ -19,17 +19,24 @@ class FileSystem():
     def change_current_working_directory(self, directory):
         os.chdir(directory)
         
+    @staticmethod
     def move_directory(self, source, destination):
         pass
         
+    @staticmethod
     def move_file(self, source, destination):
         pass
         
-    def copy_directory(self, source, destination):
-        pass
+    @staticmethod
+    def copy_directory(self, source):
+        destination = source + " - Copy"
+        shutil.copytree(source, destination)
         
-    def copy_file(self, source, destination):
-        pass
+    @staticmethod
+    def copy_file(self, source):
+        destination = source + " - Copy" + os.path.splitext(source)[1]
+        shutil.copy(source, destination)
+        
     
     @staticmethod
     def rename_directory(self,old_name, new_name):

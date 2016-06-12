@@ -40,6 +40,7 @@ class Directory(QtWidgets.QWidget):
         menu = QtWidgets.QMenu()
         rename_directory_action = menu.addAction("Rename Directory")
         delete_directory_action = menu.addAction("Delete Directory")
+        copy_directory_action = menu.addAction("Copy Directory")
         action = menu.exec_(self.mapToGlobal(position))
         
         if action == rename_directory_action:
@@ -50,6 +51,9 @@ class Directory(QtWidgets.QWidget):
         if action == delete_directory_action:
             self.hide()
             FileSystem.delete_directory(self,self.directory_label.text())
+            
+        if action == copy_directory_action:
+            FileSystem.copy_directory(self,self.directory_label.text())
 
             
     def rename_dir(self):
